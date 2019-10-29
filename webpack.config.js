@@ -1,13 +1,24 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const webpack = require('webpack')
 module.exports = {
   mode:'development',
-  entry: './src/index.js',
+  entry: {
+    main:'./src/index.js'
+  },
   output: {
-    filename: "bundle.js",
+    filename: "[name].js",
     path: path.resolve(__dirname,'dist'),
-    publicPath: "./"
+  },
+  devtool: "cheap-module-eval-source-map",
+  devServer: {
+    contentBase: "./dist",
+    compress: true,
+    open:true,
+    port: 9000,
+    hot:true,
+    hotOnly: true
   },
   module: {
     rules: [{
@@ -27,17 +38,23 @@ module.exports = {
       }
     },{
       test: /\.(css|less)$/,
-      use:['style-loader',
+      use:[
+        'style-loader',
         'css-loader',
         'postcss-loader',
         'less-loader'
       ]
+    }, {
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: "babel-loader"
     }]
   },
   plugins:[
     new HtmlWebpackPlugin({
       template: "src/index.html"
     }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    // new webpack.HotModuleReplacementPlugin()
   ]
 }

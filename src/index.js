@@ -1,9 +1,11 @@
-import Header from './header.js'
-import meizi from './images/meizi1.jpg'
-import './index.less';
-var root = document.getElementById('root');
-var img = new Image();
-img.src = meizi;
-img.classList.add('logo');
-root.append(img);
-new Header();
+import './index.css'
+import createItem from './cRT'
+setInterval(function(){
+  createItem()
+},2000)
+
+if (module.hot) {
+  module.hot.accept('./cRT.js', function() {
+    console.log('Accepting the updated printMe module!');
+  })
+}
