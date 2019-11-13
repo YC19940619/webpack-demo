@@ -1,24 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const webpack = require('webpack')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin/dist/clean-webpack-plugin');
 module.exports = {
-  mode:'development',
   entry: {
     main:'./src/index.js'
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname,'dist'),
-  },
-  devtool: "cheap-module-eval-source-map",
-  devServer: {
-    contentBase: "./dist",
-    compress: true,
-    open:true,
-    port: 9000,
-    hot:true,
-    hotOnly: true
+    path: path.resolve(__dirname,'../dist'),
   },
   module: {
     rules: [{
@@ -50,11 +39,33 @@ module.exports = {
       loader: "babel-loader"
     }]
   },
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      minSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      name: true,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          filename: "vendors.js"
+        },
+        default: {
+          priority: -20,
+          reuseExistingChunk: true,
+          filename: "main2.js"
+        }
+      }
+    }
+  },
   plugins:[
     new HtmlWebpackPlugin({
       template: "src/index.html"
     }),
-    new CleanWebpackPlugin(),
-    // new webpack.HotModuleReplacementPlugin()
+    new CleanWebpackPlugin()
   ]
 }

@@ -1,11 +1,15 @@
-import './index.css'
-import createItem from './cRT'
-setInterval(function(){
-  createItem()
-},2000)
-
-if (module.hot) {
-  module.hot.accept('./cRT.js', function() {
-    console.log('Accepting the updated printMe module!');
-  })
-}
+// import _ from 'lodash';
+// console.log(_.join([1,2,3]))
+import test from './test.js';
+console.log(test)
+// function createEle() {
+//   return import(/*webpackChunkName: "lodash"*/'lodash').then(({default:_}) => {
+//     let ele = document.createElement('div');
+//     ele.innerText = _.join([1,2,3],'sss');
+//     return ele
+//   })
+// }
+//
+// createEle().then(ele => {
+//   document.body.append(ele)
+// })
